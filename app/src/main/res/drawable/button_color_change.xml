@@ -1,0 +1,5 @@
+<!-- res/anim/button_color_change.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:color="@color/pressed_color" />
+    <item android:color="@color/default_color" />
+</selector>
