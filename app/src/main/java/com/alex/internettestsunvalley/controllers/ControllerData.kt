@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.Toast
 import com.alex.internettestsunvalley.Models.Task
+import com.alex.internettestsunvalley.callBacks.TaskCallback
 import com.alex.internettestsunvalley.services.ApiClient
 import com.alex.internettestsunvalley.services.ConectionI.macDevice
 import retrofit2.Call
@@ -48,25 +49,26 @@ object ControllerData {
     }
 
 
-    fun getDataAllTaskById(view: View) {
-        var responseMac=macDevice(view.context)
-
+    fun getDataAllTaskById(view: View, callback: TaskCallback) {
+        var responseMac = macDevice(view.context)
         val call = ApiClient.apiService.getTasksbyid(responseMac.toString())
         call.enqueue(object : Callback<List<Task>> {
 
             override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
-                println(response)
                 if (response.isSuccessful) {
                     val tasks = response.body()
-                    println("getDataAllTaskById"+tasks)
-                    ;
+                    if (tasks != null) {
+                        callback.onSuccess(tasks)
+                    } else {
+                        callback.onFailure(Exception("La lista de tareas está vacía"))
+                    }
                 } else {
-                    Toast.makeText(view.context, "Error al obtener las tareas", Toast.LENGTH_SHORT).show()
+                    callback.onFailure(Exception("Error al obtener las tareas"))
                 }
             }
 
             override fun onFailure(call: Call<List<Task>>, t: Throwable) {
-                Toast.makeText(view.context, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
+                callback.onFailure(t)
             }
         })
     }
