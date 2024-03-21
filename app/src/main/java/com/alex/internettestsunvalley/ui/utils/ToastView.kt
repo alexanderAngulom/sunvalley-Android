@@ -25,12 +25,8 @@ object ToastView {
         textView.setBackgroundColor(backgroundColor)
         textView.background = borderDrawable
         textView.gravity = Gravity.CENTER
-        textView.setPadding(16, 8, 16, 8) // Ajustar el padding si es necesario
-
-        // Establecer el TextView personalizado como vista del Toast
+        textView.setPadding(16, 8, 16, 8)
         toast.view = textView
-
-        // Mostrar el Toast
         toast.show()
     }
 }
